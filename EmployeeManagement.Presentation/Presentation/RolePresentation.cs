@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Presentation.Operations;
+﻿using EmployeeManagement.Presentation.Interfaces;
+using EmployeeManagement.Presentation.Operations;
 using EmployeeManagement.Presentation.View;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,15 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Presentation.Presentation
 {
-    internal class RolePresentation
+   public class RolePresentation:IRolePresentation
     {
-        public static void Start()
+        private IRoleOperation roleOperation;
+        private IRoleView roleView;
+        public RolePresentation(IRoleOperation _roleOperation,IRoleView _roleView) { 
+            this.roleOperation = _roleOperation;
+            this.roleView = _roleView;
+        }
+        public void Start()
         {
             while (true)
             {
@@ -22,10 +29,10 @@ namespace EmployeeManagement.Presentation.Presentation
                     case "0":
                         return;
                     case "1":
-                        RoleOperation.Add();
+                        roleOperation.Add();
                         break;
                     case "2":
-                        RoleView.ViewAll();
+                        roleView.ViewAll();
                         break;
                     
                     default:

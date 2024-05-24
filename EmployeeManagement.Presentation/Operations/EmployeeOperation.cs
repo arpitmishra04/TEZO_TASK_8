@@ -6,95 +6,104 @@ using EmployeeManagement.Presentation.View;
 using EmployeeManagement.Presentation.Validations;
 using EmployeeManagement.Core.Services;
 using System.Reflection;
+using EmployeeManagement.Presentation.Interfaces;
+using EmployeeManagement.Core.Interfaces;
 namespace EmployeeManagement.Presentation.Operations
 {
    
-    internal class EmployeeOperation
+    public class EmployeeOperation:IEmployeeOperation
     {
-        private static string emp="", jobTitle="", firstName = "", lastName = "", dob = "", email = "", mobile = "", joiningDate = "",department = "" ,manager = "",project = ""; 
-        private static int locationID=0;
-        private static bool isExit = false;
-        private static Dictionary<string, Action> methodList = new Dictionary<string, Action>();
-        
+        private string emp="", jobTitle="", firstName = "", lastName = "", dob = "", email = "", mobile = "", joiningDate = "",department = "" ,manager = "",project = ""; 
+        private int locationID=0;
+        private  bool isExit = false;
+        private IEmployeeView employeeView;
+        private IValidation validation;
+        private Dictionary<string, Action> methodList = new Dictionary<string, Action>();
+       private IInput input;
+        private IEmployeeService employeeService;
          
 
-        static EmployeeOperation()
+        public EmployeeOperation(IInput _input,IEmployeeService _employeeService,IEmployeeView employeeView,IValidation _validation)
         {
+            this.input = _input;
+            this.employeeService = _employeeService;
+            this.employeeView = employeeView;
+            this.validation = _validation;
             MethodList();
         }
-        private static void EmployeeNumber()
+        private void EmployeeNumber()
         {
             Console.WriteLine("\n Enter Employee Number (eg:TZXXXX)");
-            emp = Input.GetId(0);
+            emp = input.GetId(0);
             if (emp == "0") isExit=true;
         }
-        private static void FirstName()
+        private void FirstName()
         {
             Console.WriteLine("\n Enter First Name:");
-            firstName = Input.GetNameTypeInput("FirstName");
+            firstName = input.GetNameTypeInput("FirstName");
             if (firstName == "0") isExit=true;
         }
 
-        private static void LastName() {
+        private void LastName() {
             Console.WriteLine("\n Enter Last Name:");
-             lastName = Input.GetNameTypeInput("LastName");
+             lastName = input.GetNameTypeInput("LastName");
             if (lastName == "0") isExit=true;
         }
 
-        private static void DOB()
+        private void DOB()
         {
             Console.WriteLine("\n Enter Date of Birth (DD/MM/YYYY)");
-            dob = Input.GetDateOfBirth();
+            dob = input.GetDateOfBirth();
             if (dob == "0") isExit = true;
         }
 
-        private static void Email()
+        private void Email()
         {
             Console.WriteLine("\n Enter Email:");
-             email = Input.GetEmail();
+             email = input.GetEmail();
             if (email == "0") isExit = true;
         }
 
 
-        private static void Phone()
+        private void Phone()
         {
             Console.WriteLine("\n Enter Mobile Number:");
-             mobile = Input.GetMobileNumber();
+             mobile = input.GetMobileNumber();
             if (mobile == "0") isExit = true;
         }
 
-        private static void JoiningDate()
+        private void JoiningDate()
         {
             Console.WriteLine("\n Enter Employee Joining Date (DD/MM/YYYY)*");
-             joiningDate = Input.GetJoiningDate();
+             joiningDate = input.GetJoiningDate();
             if (joiningDate == "0") isExit = true;
         }
 
-        private static void JobTitle()
+        private void JobTitle()
         {
             Console.WriteLine("\n Enter Job Title:");
-           jobTitle = Input.GetRole();
+           jobTitle = input.GetRole();
             if (jobTitle == "0") isExit = true;
 
         }
 
-        private static void Location()
+        private void Location()
         {
             Console.WriteLine("\n Enter Employee Location:");
-            locationID = Input.GetLocation();
+            locationID = input.GetLocation();
             if (locationID == 0) isExit = true;
 
         }
 
-        private static void Department()
+        private void Department()
         {
             Console.WriteLine("\n Enter Employee Department:");
-             department = Input.GetDepartment(jobTitle);
+             department = input.GetDepartment(jobTitle);
             if (department == "0") isExit = true;
 
         }
 
-        private static void Manager()
+        private void Manager()
         {
             Console.WriteLine("\n Enter the Name of the Manager for Employee:");
              manager = Console.ReadLine()!;
@@ -102,7 +111,7 @@ namespace EmployeeManagement.Presentation.Operations
 
         }
 
-        private static void Project()
+        private void Project()
         {
             Console.WriteLine("\n Enter the Project assigned to the Employee:");
              project = Console.ReadLine()!;
@@ -111,7 +120,7 @@ namespace EmployeeManagement.Presentation.Operations
         }
 
 
-        private static Dictionary<string, Action> MethodList()
+        private Dictionary<string, Action> MethodList()
         {
             methodList.Add("1", EmployeeNumber);
             methodList.Add("2", FirstName);
@@ -131,7 +140,7 @@ namespace EmployeeManagement.Presentation.Operations
 
         
 
-        public static void Add()
+        public void Add()
         {
             
             Console.WriteLine("Initiating Employee Addition procedure,please type \"0\" to return to the previous menu anytime");      
@@ -161,7 +170,6 @@ namespace EmployeeManagement.Presentation.Operations
                 Manager=manager,
                 Project=project
             };
-            EmployeeService employeeService = new EmployeeService();
             bool isSuccess= employeeService.Add(employee);
             if (isSuccess)
             {
@@ -172,9 +180,9 @@ namespace EmployeeManagement.Presentation.Operations
 
 
 
-        public static void Update()
+        public  void Update()
         {
-            EmployeeService employeeService = new EmployeeService();
+            
             List<EmployeeModel> emplist = employeeService.ViewAll();
             if (emplist.Count == 0)
             {
@@ -184,11 +192,11 @@ namespace EmployeeManagement.Presentation.Operations
             
             bool isUpdate = true;
             //int locationId = 0;
-            EmployeeView.ViewAll();
+            employeeView.ViewAll();
             Console.WriteLine("Initiating Employee Updation procedure,please type \"exit\" to return to return to the previous menu anyime");
 
             Console.WriteLine("Enter the employee Number of the employee whose record needs to be updated:-");
-            string emp = Input.GetId(1);
+            string emp = input.GetId(1);
             if (emp == "0") return;
 
 
@@ -203,7 +211,7 @@ namespace EmployeeManagement.Presentation.Operations
 
                 while (true) {
                     if (option == "0") { isUpdate = false; break; }
-                    isValidOption=Validation.ValidateOptions(option);
+                    isValidOption=validation.ValidateOptions(option);
                     if (isValidOption)break;
                     option = Console.ReadLine()!;
                 }
@@ -229,7 +237,7 @@ namespace EmployeeManagement.Presentation.Operations
 
             }
 
-            
+            bool isSuccess = false;
 
             foreach (EmployeeModel employee in emplist)
             {
@@ -246,11 +254,12 @@ namespace EmployeeManagement.Presentation.Operations
                     if (!string.IsNullOrWhiteSpace(department)) employee.Department = department;
                     if (!string.IsNullOrWhiteSpace(manager)) employee.Manager = manager;
                     if (!string.IsNullOrWhiteSpace(project)) employee.Project = project;
-                         
+
+                    isSuccess = employeeService.Edit(employee);
                 }
             }
 
-           bool isSuccess= employeeService.Edit(emplist);
+           
             if (isSuccess)
             {
                 Console.WriteLine($"Employee with employee number {emp} updated sucessfully");
@@ -259,14 +268,13 @@ namespace EmployeeManagement.Presentation.Operations
         }
 
 
-        public static void Delete()
+        public  void Delete()
         {
-            EmployeeService employeeService = new EmployeeService();
-            int recordsCheck=EmployeeView.ViewAll();
+            int recordsCheck=employeeView.ViewAll();
             if (recordsCheck == 0) return;
             Console.WriteLine("Initiating Employee Deletion procedure,please type \"0\" to return to return to the previous menu anyime");
             Console.WriteLine("Enter the Employee Number:-");
-            string empNo = Input.GetId(1);
+            string empNo = input.GetId(1);
             if (empNo == "0") return;
             bool isSuccess=employeeService.Delete(empNo);
             if (isSuccess)

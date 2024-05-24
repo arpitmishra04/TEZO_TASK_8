@@ -1,5 +1,7 @@
-﻿using EmployeeManagement.Core.Services;
+﻿using EmployeeManagement.Core.Interfaces;
+using EmployeeManagement.Core.Services;
 using EmployeeManagement.Model;
+using EmployeeManagement.Presentation.Interfaces;
 using EmployeeManagement.Presentation.Operations;
 using EmployeeManagement.Presentation.Validations;
 using System;
@@ -13,12 +15,24 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Presentation.Inputs
 {
-    internal class Input
+    public class Input:IInput
     {
-        static EmployeeService employeeService = new EmployeeService();
-        static RoleService roleService = new RoleService();
-        static LocationService locationService = new LocationService();
-        public static string GetId(int validation)
+        private IEmployeeService employeeService;
+        private IRoleService roleService;
+        private ILocationService locationService;
+        private IValidation validation;
+        private ILocationOperation locationOperation;
+        //private IRoleOperation roleOperation;
+        public Input(IEmployeeService _employeeService, IRoleService _RoleService, ILocationService _locationService,IValidation _validation,ILocationOperation _locationOperation/*,IRoleOperation _roleOperation*/) {
+            this.employeeService = _employeeService;
+            this.roleService = _RoleService;
+            this.locationService = _locationService;
+            this.validation = _validation;
+            this.locationOperation = _locationOperation;
+            //this.roleOperation = _roleOperation;
+        } 
+      
+        public string GetId(int val)
         {
            
             string employeeNumber = Console.ReadLine()!;
@@ -27,21 +41,21 @@ namespace EmployeeManagement.Presentation.Inputs
 
             while (true) {
                 if (employeeNumber == "0") return employeeNumber;
-                isValidId = Validation.ValidateId(employeeNumber, validation);
+                isValidId = validation.ValidateId(employeeNumber, val);
                 if (isValidId) return employeeNumber;
                 employeeNumber = Console.ReadLine()!;
 
             }
             
         }
-        public static string GetNameTypeInput(string inp)
+        public string GetNameTypeInput(string inp)
         {
             string input = Console.ReadLine()!;
             bool isValidName = false;
 
             while (true) {
                 if (input == "0") return input;
-                isValidName = Validation.ValidateNameTypeInput(input, inp);
+                isValidName = validation.ValidateNameTypeInput(input, inp);
                if (isValidName)return input;
                input = Console.ReadLine()!;
                    
@@ -49,33 +63,33 @@ namespace EmployeeManagement.Presentation.Inputs
             }
         }
 
-        public static string GetEmail()
+        public string GetEmail()
         {
             string email = Console.ReadLine()!;
             bool isValidEmail = false;
 
             while (true) {
                 if (email == "0") return email;
-                isValidEmail = Validation.ValidateEmail(email);
+                isValidEmail = validation.ValidateEmail(email);
                 if (isValidEmail) return email;
                 email = Console.ReadLine()!;    
             }
         }
 
-        public static string GetJoiningDate() {
+        public string GetJoiningDate() {
 
             string joiningDate = Console.ReadLine()!;
             bool isValidJoiningDate = false;
 
             while (true) {
                 if (joiningDate == "0") return joiningDate;
-                isValidJoiningDate = Validation.DateTypeInput(joiningDate,"Joining Date");
+                isValidJoiningDate = validation.DateTypeInput(joiningDate,"Joining Date");
                 if(isValidJoiningDate)return joiningDate;
                 joiningDate = Console.ReadLine()!;
             }
         }
 
-        public static string GetDateOfBirth()
+        public string GetDateOfBirth()
         {
 
             string dob = Console.ReadLine()!;
@@ -85,7 +99,7 @@ namespace EmployeeManagement.Presentation.Inputs
             while (true)
             {
                 if (dob == "0") return dob;
-                isValidDateOfBirth = Validation.DateTypeInput(dob, "Date of Birth");
+                isValidDateOfBirth = validation.DateTypeInput(dob, "Date of Birth");
                 if (isValidDateOfBirth) return dob;
                 dob = Console.ReadLine()!;
             }
@@ -94,7 +108,7 @@ namespace EmployeeManagement.Presentation.Inputs
         }
 
 
-        public static int GetLocation(string roleName) {
+        public int GetLocation(string roleName) {
 
             List<RoleModel> roleList = roleService.ViewAll();
             List<LocationModel>locationList=locationService.ViewAll();
@@ -121,12 +135,12 @@ namespace EmployeeManagement.Presentation.Inputs
                 while (true)
                 {
                     if (locationName == "0") return ;
-                    isNotDuplicateLocation = Validation.ValidateLocation(locationName);
+                    isNotDuplicateLocation = validation.ValidateLocation(locationName);
                     if (isNotDuplicateLocation) break;
                     Console.WriteLine("Cannot Enter Duplicate or Empty Location please re-enter.");
                     locationName = Console.ReadLine()!;
                 }
-                locationId = LocationOperation.Add(locationName);
+                locationId = locationOperation.Add(locationName);
             });
 
             string input = Console.ReadLine()!;
@@ -134,7 +148,7 @@ namespace EmployeeManagement.Presentation.Inputs
 
             while (true) {
                 if (input == "0") return 0;
-                isValidLocation =Validation.ValidateOptions(input);
+                isValidLocation =validation.ValidateOptions(input);
                 if (isValidLocation) break;
                 input= Console.ReadLine()!;
             }
@@ -157,9 +171,8 @@ namespace EmployeeManagement.Presentation.Inputs
 
            
         }
-        public static int GetLocation()
+        public int GetLocation()
         {
-             LocationService locationService = new LocationService();
              List<LocationModel> locationList = locationService.ViewAll();
             Dictionary<string, Action> cases = new Dictionary<string, Action>();
             int i = 1,locationId=0;
@@ -179,12 +192,12 @@ namespace EmployeeManagement.Presentation.Inputs
                 while (true)
                 {
                     if (locationName == "0") return;
-                    isNotDuplicateLocation = Validation.ValidateLocation(locationName);
+                    isNotDuplicateLocation = validation.ValidateLocation(locationName);
                     if (isNotDuplicateLocation) break;
                     Console.WriteLine("Cannot Enter Duplicate or Empty Location please re-enter.");
                     locationName = Console.ReadLine()!;
                 }
-                locationId = LocationOperation.Add(locationName);
+                locationId = locationOperation.Add(locationName);
             });
 
             string option = Console.ReadLine()!;
@@ -192,7 +205,7 @@ namespace EmployeeManagement.Presentation.Inputs
 
             while (true) {
                 if (option == "0") return 0;
-                isValidLocation = Validation.ValidateOptions(option!);
+                isValidLocation = validation.ValidateOptions(option!);
                 if (isValidLocation) break;
                 option = Console.ReadLine()!;
             }
@@ -216,7 +229,7 @@ namespace EmployeeManagement.Presentation.Inputs
 
         }
 
-        public static string GetDepartment(string roleName)
+        public  string GetDepartment(string roleName)
         {
 
             List<RoleModel> roleList = roleService.ViewAll();
@@ -244,7 +257,7 @@ namespace EmployeeManagement.Presentation.Inputs
 
             while (true) {
                 if (input == "0") return input;
-                isValidDepartment = Validation.ValidateOptions(input);
+                isValidDepartment = validation.ValidateOptions(input);
                 if (isValidDepartment) break;
                 input = Console.ReadLine()!;
             }
@@ -268,20 +281,20 @@ namespace EmployeeManagement.Presentation.Inputs
 
         }
 
-        public static string GetMobileNumber()
+        public  string GetMobileNumber()
         {
             string mobileNumber = Console.ReadLine()!;
             bool isValidMobileNumber = false;
 
             while (true) {
                 if (mobileNumber == "0") return mobileNumber;
-                isValidMobileNumber = Validation.ValidateMobileNumber(mobileNumber);
+                isValidMobileNumber = validation.ValidateMobileNumber(mobileNumber);
                 if (isValidMobileNumber) return mobileNumber;
                 mobileNumber = Console.ReadLine()!;
             }
         }
 
-        public static string GetRole()
+        public string GetRole()
         {
             int i = 1;
             List<RoleModel> roleList = roleService.ViewAll();
@@ -300,7 +313,7 @@ namespace EmployeeManagement.Presentation.Inputs
 
             while (true) {
                 if (roleInput == "0") return roleInput;
-                isValidRole = Validation.ValidateOptions(roleInput);
+                isValidRole = validation.ValidateOptions(roleInput);
                 if (isValidRole) break;
                 roleInput = Console.ReadLine()!;
             }
@@ -315,7 +328,7 @@ namespace EmployeeManagement.Presentation.Inputs
                 i++;
 
             }
-            cases.Add($"{i}", () => { roleInput =RoleOperation.Add(); });
+            
 
             while (true) { 
 

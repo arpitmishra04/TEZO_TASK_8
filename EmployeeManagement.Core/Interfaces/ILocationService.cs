@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Core.Interfaces
 {
-    public interface IRoleService
+    public interface ILocationService
     {
-        bool Add( RoleModel role);
-        List<RoleModel> ViewAll();
+        public bool Add(LocationModel location);
+        public List<LocationModel> ViewAll();
     }
 }

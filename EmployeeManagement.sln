@@ -6,12 +6,25 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Model", "EmployeeMangement.Model\EmployeeManagement.Model.csproj", "{B8EF3C69-0D73-40A3-85A1-56D71509B959}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Application", "EmployeeManagement.Application\EmployeeManagement.Application.csproj", "{1A9F5241-0D90-4A1E-83DE-D12E8A83C094}"
+	ProjectSection(ProjectDependencies) = postProject
+		{21894FDC-AE26-4550-86A4-E0F91AECD3A4} = {21894FDC-AE26-4550-86A4-E0F91AECD3A4}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Core", "EmployeeManagement.Core\EmployeeManagement.Core.csproj", "{CAEF8025-19E3-4394-AE3D-2C8BF64CBFD0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D48DB94-DB37-4E59-AE00-466546F459BE} = {9D48DB94-DB37-4E59-AE00-466546F459BE}
+		{B8EF3C69-0D73-40A3-85A1-56D71509B959} = {B8EF3C69-0D73-40A3-85A1-56D71509B959}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.DataAccess", "EmployeeManagement.DataAccess\EmployeeManagement.DataAccess.csproj", "{9D48DB94-DB37-4E59-AE00-466546F459BE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B8EF3C69-0D73-40A3-85A1-56D71509B959} = {B8EF3C69-0D73-40A3-85A1-56D71509B959}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeManagement.Presentation", "EmployeeManagement.Presentation\EmployeeManagement.Presentation.csproj", "{21894FDC-AE26-4550-86A4-E0F91AECD3A4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CAEF8025-19E3-4394-AE3D-2C8BF64CBFD0} = {CAEF8025-19E3-4394-AE3D-2C8BF64CBFD0}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", "{E7948DF9-44FB-41D8-8BAA-561ADA95EE98}"
 	ProjectSection(SolutionItems) = preProject

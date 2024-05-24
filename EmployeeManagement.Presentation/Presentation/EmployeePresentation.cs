@@ -1,11 +1,19 @@
-﻿using EmployeeManagement.Presentation.Operations;
+﻿using EmployeeManagement.Presentation.Interfaces;
+using EmployeeManagement.Presentation.Operations;
 using EmployeeManagement.Presentation.View;
 
 namespace EmployeeManagement.Presentation.Presentation
 {
-    internal class EmployeePresentation
+    public class EmployeePresentation : IEmployeePresentation
     {
-        public static void Start()
+        private IEmployeeOperation employeeOperation;
+        private IEmployeeView employeeView;
+        public EmployeePresentation(IEmployeeOperation _employeeOpertion,IEmployeeView _employeeView) {
+            this.employeeOperation = _employeeOpertion;
+            this.employeeView = _employeeView;
+        }
+       
+        public void Start()
         {
             while (true)
             {
@@ -19,21 +27,21 @@ namespace EmployeeManagement.Presentation.Presentation
                     case "0": return;
 
                     case "1":
-                        EmployeeOperation.Add();
+                        employeeOperation.Add();
 
                         break;
                     case "2":
-                        EmployeeView.ViewAll();
+                        employeeView.ViewAll();
 
                         break;
                     case "3":
-                        EmployeeView.ViewOne();
+                        employeeView.ViewOne();
 
                         break;
-                    case "4":EmployeeOperation.Update();
+                    case "4":employeeOperation.Update();
 
                         break;
-                    case "5":EmployeeOperation.Delete();
+                    case "5":employeeOperation.Delete();
 
                         break;
             

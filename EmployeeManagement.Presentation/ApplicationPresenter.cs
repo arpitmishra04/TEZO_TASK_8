@@ -1,10 +1,18 @@
-﻿using EmployeeManagement.Presentation.Presentation;
+﻿using EmployeeManagement.Presentation.Interfaces;
+using EmployeeManagement.Presentation.Presentation;
 
 namespace EmployeeManagement.Presentation
 {
-    public class ApplicationPresenter
+    public class ApplicationPresenter:IApplicationPresenter
     {
-        public static void Start()
+        private IEmployeePresentation employeePresentation;
+        private IRolePresentation rolePresentation;
+      
+        public ApplicationPresenter(IEmployeePresentation _employeePresentation,IRolePresentation _rolePresentation) {
+            this.employeePresentation = _employeePresentation;
+            this.rolePresentation = _rolePresentation;
+        }
+        public void Start()
         {
             while (true)
             {
@@ -19,10 +27,10 @@ namespace EmployeeManagement.Presentation
                         Environment.Exit(0);
                         break;
                     case "1":
-                        EmployeePresentation.Start();
+                        employeePresentation.Start();
                         break;
                     case "2":
-                        RolePresentation.Start();
+                        rolePresentation.Start();
                         break;
                     default:
                         Console.WriteLine("Invalid option. Please try again.");
@@ -30,5 +38,6 @@ namespace EmployeeManagement.Presentation
                 }
             }
         }
+
     }
 }

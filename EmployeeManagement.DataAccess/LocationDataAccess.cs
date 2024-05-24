@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Model;
+﻿using EmployeeManagement.DataAccess.Interfaces;
+using EmployeeManagement.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.DataAccess
 {
-    public class LocationDataAccess
+    public class LocationDataAccess:ILocationDataAccess
     {
         public static string path = @"C:\Users\arpit.m\OneDrive - Technovert\Desktop\Tezo-tasks\classroom\Task-5\Locations.json";
 
-        public static List<LocationModel> GetAll()
+        public List<LocationModel> GetAll()
         {
             var data = File.ReadAllText(path);
 
@@ -25,7 +26,7 @@ namespace EmployeeManagement.DataAccess
 
         }
 
-        public static bool Set(List<LocationModel> locationList)
+        public bool Set(List<LocationModel> locationList)
         {
             var data = File.ReadAllText(path);
             string locations = JsonConvert.SerializeObject(locationList)!;

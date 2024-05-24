@@ -1,5 +1,7 @@
-﻿using EmployeeManagement.Core.Services;
+﻿using EmployeeManagement.Core.Interfaces;
+using EmployeeManagement.Core.Services;
 using EmployeeManagement.Model;
+using EmployeeManagement.Presentation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +10,14 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Presentation.Operations
 {
-    internal class LocationOperation
+    public class LocationOperation:ILocationOperation
     {
-        private static readonly Random random = new Random();
-        public static int Add(string locationName)
+        private ILocationService locationService;
+        public LocationOperation(ILocationService _locationservice) { 
+            this.locationService = _locationservice;
+        }
+        private  readonly Random random = new Random();
+        public int Add(string locationName)
         {
           
             int locationId = GenerateId();
@@ -20,14 +26,14 @@ namespace EmployeeManagement.Presentation.Operations
                 LocationId = locationId,
                 LocationName = locationName,
             };
-            LocationService locationService = new LocationService();
+            
             locationService.Add(location);
             return locationId;
         }
 
-        private static int GenerateId()
+        private int GenerateId()
         {
-            LocationService locationService = new LocationService();
+           
             List<LocationModel> locationList =locationService.ViewAll();
         long timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 

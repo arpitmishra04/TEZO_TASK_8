@@ -1,6 +1,8 @@
 ﻿using ConsoleTables;
+using EmployeeManagement.Core.Interfaces;
 using EmployeeManagement.Core.Services;
 using EmployeeManagement.Model;
+using EmployeeManagement.Presentation.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +12,18 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Presentation.View
 {
-    public class RoleView
+    public class RoleView:IRoleView
     {
-        static  RoleService roleService = new RoleService();
-        static LocationService locationService = new LocationService(); 
-        public static void ViewAll()
+        private IRoleService roleService;
+        private ILocationService locationService;
+        public RoleView(IRoleService _roleService,ILocationService _locationService) {
+            this.roleService = _roleService;
+            this.locationService = _locationService;
+        
+        }
+        
+       
+        public void ViewAll() 
         {
 
             List<RoleModel> roleList = roleService.ViewAll();

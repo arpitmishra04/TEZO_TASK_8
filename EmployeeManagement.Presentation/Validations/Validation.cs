@@ -6,16 +6,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Data.SqlClient;
+using EmployeeManagement.Core.Interfaces;
+using EmployeeManagement.Presentation.Interfaces;
+
 
 namespace EmployeeManagement.Presentation.Validations
 {
-    public class Validation
+    public class Validation:IValidation
     {
-        static EmployeeService employeeService = new EmployeeService();
+       private IEmployeeService employeeService;
+       private ILocationService locationService;
+        public Validation(IEmployeeService _employeeService,ILocationService _locationService) {
 
-        public static bool ValidateId(string employeeNumber,int validation)
+            this.employeeService= _employeeService;
+            this.locationService= _locationService;
+        }
+        
+        public  bool ValidateId(string employeeNumber,int validation)
         {
 
             if (validation == 0)
@@ -70,7 +78,7 @@ namespace EmployeeManagement.Presentation.Validations
         }
 
 
-        public static bool ValidateNameTypeInput(string input,string inpType) {
+        public bool ValidateNameTypeInput(string input,string inpType) {
 
             if (input == "")
             {
@@ -90,7 +98,7 @@ namespace EmployeeManagement.Presentation.Validations
 
 
 
-        public static bool ValidateEmail(string email)
+        public bool ValidateEmail(string email)
         {
            
                 if (email == "") { 
@@ -107,7 +115,7 @@ namespace EmployeeManagement.Presentation.Validations
         }
 
 
-        public static bool DateTypeInput(string date,string type)
+        public bool DateTypeInput(string date,string type)
         {
 
             if (date == "")
@@ -126,7 +134,7 @@ namespace EmployeeManagement.Presentation.Validations
         }
 
 
-        public static bool ValidateOptions(string input)
+        public  bool ValidateOptions(string input)
         {
             
                 if (input == "")
@@ -145,7 +153,7 @@ namespace EmployeeManagement.Presentation.Validations
         }
 
 
-        public static bool ValidateMobileNumber(string mobileNumber)
+        public  bool ValidateMobileNumber(string mobileNumber)
         {
 
             if (mobileNumber != "" && !Regex.IsMatch(mobileNumber, @"^\d{10}$"))
@@ -157,9 +165,8 @@ namespace EmployeeManagement.Presentation.Validations
             else return true;
         }
 
-        public static bool ValidateLocation(string locationName)
+        public  bool ValidateLocation(string locationName)
         {
-            LocationService locationService = new LocationService();
             List<LocationModel> locationList = locationService.ViewAll();
             foreach(LocationModel location in locationList) {
                 if (locationName == "" || locationName.ToUpper().Equals(location.LocationName.ToUpper()))

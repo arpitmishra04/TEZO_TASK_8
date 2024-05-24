@@ -3,15 +3,25 @@ using ConsoleTables;
 using System.Text.RegularExpressions;
 using EmployeeManagement.Presentation.Validations;
 using EmployeeManagement.Core.Services;
+using EmployeeManagement.Core.Interfaces;
+using EmployeeManagement.Presentation.Interfaces;
 
 namespace EmployeeManagement.Presentation.View
 {
-    internal class EmployeeView
+    public class EmployeeView:IEmployeeView
     {
-       static EmployeeService employeeService = new EmployeeService();
-       static LocationService locationService = new LocationService();
+        private IEmployeeService employeeService;
+        private ILocationService locationService;
+        private IValidation validation;
+        public EmployeeView(IEmployeeService _employeeService,ILocationService _locationservice,IValidation _validation) {
+            this.employeeService = _employeeService;
+            this.locationService = _locationservice;
+            this.validation = _validation;
+
+        }
+       
       
-        public static int ViewAll()
+        public int ViewAll()
         {
             List<LocationModel> locationList = locationService.ViewAll();
             List<EmployeeModel> empList = employeeService.ViewAll();
@@ -51,7 +61,7 @@ namespace EmployeeManagement.Presentation.View
 
         }
 
-        public static void ViewOne()
+        public void ViewOne()
         {
             List<EmployeeModel> emplist = employeeService.ViewAll();
             List<LocationModel> locationList = locationService.ViewAll();
@@ -70,7 +80,7 @@ namespace EmployeeManagement.Presentation.View
                 while (true)
                 {
                     if (option == "0") return;
-                    isValidOption= Validation.ValidateOptions(option);
+                    isValidOption= validation.ValidateOptions(option);
                     if (isValidOption) break;
                     option = Console.ReadLine()!;
                 }
