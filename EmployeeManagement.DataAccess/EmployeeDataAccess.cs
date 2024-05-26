@@ -37,31 +37,32 @@ namespace EmployeeManagement.DataAccess
                     connection.Open();
                     // Executing the SQL query  
                     SqlDataReader sdr = cm.ExecuteReader();
-                if (sdr.Read()) { 
+                 
                     while (sdr.Read())
                     {
-                    employee.EmpNo = (string)sdr["EmpNo"];
-                    employee.FirstName = (string)sdr["FirstName"];
-                    employee.LastName= (string)sdr["LastName"];
-                    employee.DateOfBirth = (string)sdr["DateOfBirth"];
-                    employee.Email= (string)sdr["Email"];
-                    employee.MobileNumber= (string)sdr["MobileNumber"];
-                    employee.JoiningDate = (string)sdr["JoiningDate"];
-                    employee.LocationId = (int)sdr["LocationID"];
-                    employee.JobTitle = (string)sdr["JobTitle"];
-                    employee.Department = (string)sdr["Department"];
-                    employee.Manager = (string)sdr["Manager"];
-                    employee.Project = (string)sdr["Project"];
-                    employees.Add( employee );
+                    employee.EmpNo = Convert.ToString(sdr["EmpNo"])!;
+                    employee.FirstName = Convert.ToString(sdr["FirstName"])!;
+                    employee.LastName= Convert.ToString(sdr["LastName"])!;
+                    employee.DateOfBirth = Convert.ToString(sdr["DateOfBirth"])!;
+                    employee.Email= Convert.ToString(sdr["Email"])!;
+                    employee.MobileNumber= Convert.ToString(sdr["MobileNumber"])!;
+                    employee.JoiningDate = Convert.ToString(sdr["JoiningDate"])!;
+                    employee.LocationId = Convert.ToInt32(sdr["LocationID"]);
+                    employee.JobTitle = Convert.ToString(sdr["JobTitle"])!;
+                    employee.Department = Convert.ToString(sdr["Department"])!;
+                    employee.Manager = Convert.ToString(sdr["Manager"])!;
+                    employee.Project = Convert.ToString(sdr["Project"])!;
+                        employees.Add(employee);
                     }
-                }
-                else { return employees; }
+                    
+               
+                  return employees; 
             }
 
 
 
             
-            return employees;
+            
         }
 
         public EmployeeModel GetOne(string employeeNumber)

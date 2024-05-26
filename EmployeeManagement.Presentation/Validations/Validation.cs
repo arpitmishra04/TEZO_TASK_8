@@ -50,6 +50,12 @@ namespace EmployeeManagement.Presentation.Validations
                         }
                         else return true;
                     }
+                    
+                    if (empData.Count == 0 && !Regex.IsMatch(employeeNumber, @"^TZ\d{4}"))
+                {
+                    Console.WriteLine("Please enter valid Employee Number");
+                    return false;
+                }
                     else return true;
                 
 
