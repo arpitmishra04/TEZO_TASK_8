@@ -10,27 +10,39 @@ namespace EmployeeManagement.DataAccess
         public  List<EmployeeModel> GetAll()
         {
             List<EmployeeModel> employees = [];
-            
+            EmployeeModel employee = new EmployeeModel
+            {
+                EmpNo = ""
+                    ,
+                FirstName = ""
+                    ,
+                LastName = ""
+                    ,
+                DateOfBirth = ""
+                    ,
+                Email = ""
+                    ,
+                MobileNumber = ""
+                    ,
+                JoiningDate = ""
+                    ,
+                LocationId = -1
+                    ,
+                JobTitle = ""
+                    ,
+                Department = ""
+                    ,
+                Manager = ""
+                    ,
+                Project = ""
+            }
+                ;
+
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
                 {
                     // Creating SqlCommand object   
                     SqlCommand cm = new SqlCommand("select * from Employee", connection);
-                EmployeeModel employee =new EmployeeModel
-                    { 
-                    EmpNo=""
-                    ,FirstName=""
-                    ,LastName=""
-                    ,DateOfBirth=""
-                    ,Email=""
-                    ,MobileNumber=""
-                    ,JoiningDate=""
-                    ,LocationId=-1
-                    ,JobTitle=""
-                    ,Department=""
-                    ,Manager=""
-                    ,Project=""
-                }
-                ;
+                
 
                    
                     // Opening Connection  
@@ -67,48 +79,49 @@ namespace EmployeeManagement.DataAccess
 
         public EmployeeModel GetOne(string employeeNumber)
         {
-            
-            
+
+            EmployeeModel employee = new EmployeeModel
+            {
+                EmpNo = ""
+                    ,
+                FirstName = ""
+                    ,
+                LastName = ""
+                    ,
+                DateOfBirth = ""
+                    ,
+                Email = ""
+                    ,
+                MobileNumber = ""
+                    ,
+                JoiningDate = ""
+                    ,
+                LocationId = -1
+                    ,
+                JobTitle = ""
+                    ,
+                Department = ""
+                    ,
+                Manager = ""
+                    ,
+                Project = ""
+            }
+                ;
+
+
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
                 // Creating SqlCommand object   
                 SqlCommand cm = new SqlCommand("select * from Employee where EmpNo=@Emp", connection);
                 cm.Parameters.AddWithValue("@Emp", employeeNumber);
-                EmployeeModel employee = new EmployeeModel
-                {
-                    EmpNo = ""
-                    ,
-                    FirstName = ""
-                    ,
-                    LastName = ""
-                    ,
-                    DateOfBirth = ""
-                    ,
-                    Email = ""
-                    ,
-                    MobileNumber = ""
-                    ,
-                    JoiningDate = ""
-                    ,
-                    LocationId = -1
-                    ,
-                    JobTitle = ""
-                    ,
-                    Department = ""
-                    ,
-                    Manager = ""
-                    ,
-                    Project = ""
-                }
-                ;
+                
 
                
                     // Opening Connection  
                     connection.Open();
                     // Executing the SQL query  
                     SqlDataReader sdr = cm.ExecuteReader();
-                if (sdr.Read())
-                {
+               
                     while (sdr.Read())
                     {
                         employee.EmpNo = (string)sdr["EmpNo"];
@@ -125,13 +138,14 @@ namespace EmployeeManagement.DataAccess
                         employee.Project = (string)sdr["Project"];
 
                     }
+                    
 
                     return employee;
-                }
+                
 
             }
             
-            return null!;
+            
         }
 
         public bool Update(EmployeeModel employee)
@@ -145,7 +159,7 @@ namespace EmployeeManagement.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
-                SqlCommand cm = new SqlCommand("delete * from Employee where EmpNo=@Emp", connection);
+                SqlCommand cm = new SqlCommand("delete from Employee where EmpNo=@Emp", connection);
             cm.Parameters.AddWithValue("@Emp", employeeNumber);
                 
                 connection.Open();

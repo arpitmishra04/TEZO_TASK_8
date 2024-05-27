@@ -16,16 +16,10 @@ namespace EmployeeManagement.Core.Services
         public LocationService(ILocationDataAccess _locationDataAccess) {
             this.locationDataAccess = _locationDataAccess;
         }
-        List<LocationModel>? locationList;
+        
         public bool Add(LocationModel location)
         {
-            locationList = locationDataAccess.GetAll();
-            if (locationList == null)
-            {
-                locationList = new List<LocationModel>();
-            }
-            locationList.Add(location);
-            return locationDataAccess.Set(locationList); ;
+            return locationDataAccess.Set(location); ;
         }
 
         public List<LocationModel> ViewAll()

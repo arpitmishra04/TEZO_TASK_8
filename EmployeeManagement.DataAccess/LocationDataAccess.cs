@@ -3,6 +3,7 @@ using EmployeeManagement.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,26 +12,48 @@ namespace EmployeeManagement.DataAccess
 {
     public class LocationDataAccess:ILocationDataAccess
     {
-        public static string path = @"C:\Users\arpit.m\OneDrive - Technovert\Desktop\Tezo-tasks\classroom\Task-5\Locations.json";
+        
 
         public List<LocationModel> GetAll()
         {
-            var data = File.ReadAllText(path);
-
-            List<LocationModel> locations = JsonConvert.DeserializeObject<List<LocationModel>>(data)!;
-            if (locations != null) { 
-            return locations;
+            LocationModel location = new LocationModel {
+                LocationId = -1
+                ,LocationName=""
+            };
+            List<LocationModel> locations = [];
+            using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
+            {
+                SqlCommand command = new SqlCommand("Select * from Locations",connection);
+                connection.Open();
+                SqlDataReader sdr = command.ExecuteReader();
+                while (sdr.Read())
+                {
+                    location.LocationId = Convert.ToInt32(sdr["LocationID"]);
+                    location.LocationName = Convert.ToString(sdr["LocationName"])!;
+                    locations.Add(location);
+                }
             }
 
-            return null!;
+             return locations;
 
         }
 
-        public bool Set(List<LocationModel> locationList)
+        public bool Set(LocationModel location)
         {
-            var data = File.ReadAllText(path);
-            string locations = JsonConvert.SerializeObject(locationList)!;
-            File.WriteAllText(path, locations);
+            using (SqlConnection connection =new SqlConnection(Configuration.Configuration.Build()))
+            {
+              
+
+                SqlCommand command = new SqlCommand("insert into Locations values(@id,@name)",connection);
+                command.Parameters.AddWithValue("@id", location.LocationId);
+                command.Parameters.AddWithValue("@name", location.LocationName);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+
+            }
+
+               
             return true;
         }
     }

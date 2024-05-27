@@ -10,6 +10,6 @@ namespace EmployeeManagement.DataAccess.Interfaces
     public interface ILocationDataAccess
     {
         public List<LocationModel> GetAll();
-        public bool Set(List<LocationModel> locationList);
+        public bool Set(LocationModel locationList);
     }
 }

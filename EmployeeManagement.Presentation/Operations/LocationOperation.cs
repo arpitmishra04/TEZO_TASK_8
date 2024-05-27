@@ -39,14 +39,14 @@ namespace EmployeeManagement.Presentation.Operations
 
             int id = 0;
 
-            if (locationList == null)
+            if (locationList.Count() == 0)
             {
                 id = random.Next(1, 1000);
             }
 
             else
             {
-                id = locationList[locationList.Count - 1].LocationId + random.Next(1, 1000);
+                id = locationList[locationList.Count() - 1].LocationId + random.Next(1, 900);
             }
 
             return id;
