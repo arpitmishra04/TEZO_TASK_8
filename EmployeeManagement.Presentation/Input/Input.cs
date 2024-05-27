@@ -306,7 +306,6 @@ namespace EmployeeManagement.Presentation.Inputs
                 i++;
             }
             }
-            Console.WriteLine($"{i}. Other");
 
             string roleInput = Console.ReadLine()!;
             bool isValidRole = false;

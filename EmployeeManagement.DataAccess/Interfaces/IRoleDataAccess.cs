@@ -10,6 +10,6 @@ namespace EmployeeManagement.DataAccess.Interfaces
     public interface IRoleDataAccess
     {
         public List<RoleModel> GetAll();
-        public bool Set(List<RoleModel> roleList);
+        public bool Set(RoleModel role);
     }
 }

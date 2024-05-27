@@ -16,16 +16,10 @@ namespace EmployeeManagement.Core.Services
         public RoleService(IRoleDataAccess _roleDataAccess) { 
             this.roleDataAccess = _roleDataAccess;
         }
-        List<RoleModel>? roleList;
         public bool Add(RoleModel role)
         {
-            roleList = roleDataAccess.GetAll();
-            if (roleList == null)
-            {
-                roleList = new List<RoleModel>();
-            }
-            roleList.Add(role);
-            return roleDataAccess.Set(roleList); ;
+            
+            return roleDataAccess.Set(role); ;
         }
 
         public List<RoleModel> ViewAll()

@@ -16,10 +16,7 @@ namespace EmployeeManagement.DataAccess
 
         public List<LocationModel> GetAll()
         {
-            LocationModel location = new LocationModel {
-                LocationId = -1
-                ,LocationName=""
-            };
+            
             List<LocationModel> locations = [];
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
@@ -28,8 +25,13 @@ namespace EmployeeManagement.DataAccess
                 SqlDataReader sdr = command.ExecuteReader();
                 while (sdr.Read())
                 {
-                    location.LocationId = Convert.ToInt32(sdr["LocationID"]);
-                    location.LocationName = Convert.ToString(sdr["LocationName"])!;
+                    LocationModel location = new LocationModel
+                    {
+                        LocationId = Convert.ToInt32(sdr["LocationID"])
+                ,
+                        LocationName = Convert.ToString(sdr["LocationName"])!
+                    };
+                    
                     locations.Add(location);
                 }
             }

@@ -10,33 +10,7 @@ namespace EmployeeManagement.DataAccess
         public  List<EmployeeModel> GetAll()
         {
             List<EmployeeModel> employees = [];
-            EmployeeModel employee = new EmployeeModel
-            {
-                EmpNo = ""
-                    ,
-                FirstName = ""
-                    ,
-                LastName = ""
-                    ,
-                DateOfBirth = ""
-                    ,
-                Email = ""
-                    ,
-                MobileNumber = ""
-                    ,
-                JoiningDate = ""
-                    ,
-                LocationId = -1
-                    ,
-                JobTitle = ""
-                    ,
-                Department = ""
-                    ,
-                Manager = ""
-                    ,
-                Project = ""
-            }
-                ;
+           
 
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
                 {
@@ -52,18 +26,34 @@ namespace EmployeeManagement.DataAccess
                  
                     while (sdr.Read())
                     {
-                    employee.EmpNo = Convert.ToString(sdr["EmpNo"])!;
-                    employee.FirstName = Convert.ToString(sdr["FirstName"])!;
-                    employee.LastName= Convert.ToString(sdr["LastName"])!;
-                    employee.DateOfBirth = Convert.ToString(sdr["DateOfBirth"])!;
-                    employee.Email= Convert.ToString(sdr["Email"])!;
-                    employee.MobileNumber= Convert.ToString(sdr["MobileNumber"])!;
-                    employee.JoiningDate = Convert.ToString(sdr["JoiningDate"])!;
-                    employee.LocationId = Convert.ToInt32(sdr["LocationID"]);
-                    employee.JobTitle = Convert.ToString(sdr["JobTitle"])!;
-                    employee.Department = Convert.ToString(sdr["Department"])!;
-                    employee.Manager = Convert.ToString(sdr["Manager"])!;
-                    employee.Project = Convert.ToString(sdr["Project"])!;
+                    EmployeeModel employee = new EmployeeModel
+                    {
+                        EmpNo = Convert.ToString(sdr["EmpNo"])!
+                   ,
+                        FirstName = Convert.ToString(sdr["FirstName"])!
+                   ,
+                        LastName = Convert.ToString(sdr["LastName"])!
+                   ,
+                        DateOfBirth = Convert.ToString(sdr["DateOfBirth"])!
+                   ,
+                        Email = Convert.ToString(sdr["Email"])!
+                   ,
+                        MobileNumber = Convert.ToString(sdr["MobileNumber"])!
+                   ,
+                        JoiningDate = Convert.ToString(sdr["JoiningDate"])!
+                   ,
+                        LocationId = Convert.ToInt32(sdr["LocationID"])
+                   ,
+                        JobTitle = Convert.ToString(sdr["JobTitle"])!
+                   ,
+                        Department = Convert.ToString(sdr["Department"])!
+                   ,
+                        Manager = Convert.ToString(sdr["Manager"])!
+                   ,
+                        Project = Convert.ToString(sdr["Project"])!
+                    }
+               ;
+                  
                         employees.Add(employee);
                     }
                     
