@@ -8,6 +8,7 @@ using EmployeeManagement.Core.Services;
 using System.Reflection;
 using EmployeeManagement.Presentation.Interfaces;
 using EmployeeManagement.Core.Interfaces;
+using System.Collections.Generic;
 namespace EmployeeManagement.Presentation.Operations
 {
    
@@ -193,7 +194,7 @@ namespace EmployeeManagement.Presentation.Operations
             bool isUpdate = true;
             //int locationId = 0;
             employeeView.ViewAll();
-            Console.WriteLine("Initiating Employee Updation procedure,please type \"exit\" to return to return to the previous menu anyime");
+            Console.WriteLine("Initiating Employee Updation procedure,please type \"0\" to return to return to the previous menu anyime");
 
             Console.WriteLine("Enter the employee Number of the employee whose record needs to be updated:-");
             string emp = input.GetId(1);
@@ -238,24 +239,58 @@ namespace EmployeeManagement.Presentation.Operations
             }
 
             bool isSuccess = false;
-
+            
             foreach (EmployeeModel employee in emplist)
             {
+
                 if (employee.EmpNo == emp)
                 {
-                    if(!string.IsNullOrWhiteSpace(firstName))employee.FirstName = firstName;
-                    if (!string.IsNullOrWhiteSpace(lastName))employee.LastName = lastName;
-                    if (!string.IsNullOrWhiteSpace(dob)) employee.DateOfBirth = dob;
-                    if (!string.IsNullOrWhiteSpace(email)) employee.Email = email;
-                    if (!string.IsNullOrWhiteSpace(mobile)) employee.MobileNumber = mobile;
-                    if (!string.IsNullOrWhiteSpace(joiningDate)) employee.JoiningDate = joiningDate;
-                    if (locationID != 0) employee.LocationId = locationID;
-                    if (!string.IsNullOrWhiteSpace(jobTitle)) employee.JobTitle = jobTitle;
-                    if (!string.IsNullOrWhiteSpace(department)) employee.Department = department;
-                    if (!string.IsNullOrWhiteSpace(manager)) employee.Manager = manager;
-                    if (!string.IsNullOrWhiteSpace(project)) employee.Project = project;
+                    if (!string.IsNullOrWhiteSpace(firstName)) {
+                       employee.FirstName = firstName;
+                        
+                    }
+                    if (!string.IsNullOrWhiteSpace(lastName)) { 
+                        employee.LastName = lastName;
+                       
+                    }
+                    if (!string.IsNullOrWhiteSpace(dob)) { 
+                        employee.DateOfBirth = dob;
+                       
+                    }
+                    if (!string.IsNullOrWhiteSpace(email)) {
+                        employee.Email = email;
+                        
+                    }
+                    if (!string.IsNullOrWhiteSpace(mobile)) { 
+                        employee.MobileNumber = mobile;
+                       
+                    }
+                    if (!string.IsNullOrWhiteSpace(joiningDate)) { 
+                        employee.JoiningDate = joiningDate;
+                       
+                    }
+                    if (locationID != 0) {
+                        employee.LocationId = locationID;
+                       
+                    }
+                    if (!string.IsNullOrWhiteSpace(jobTitle)) { 
+                        employee.JobTitle = jobTitle;
+                        
+                    }
+                    if (!string.IsNullOrWhiteSpace(department)) { 
+                        employee.Department = department;
+                       
+                    }
+                    if (!string.IsNullOrWhiteSpace(manager)) { 
+                        employee.Manager = manager;
+                        
+                    }
+                    if (!string.IsNullOrWhiteSpace(project)) { 
+                        employee.Project = project;
+                       
+                    }
 
-                    isSuccess = employeeService.Edit(employee);
+                    isSuccess = employeeService.Edit(employee,emp);
                 }
             }
 

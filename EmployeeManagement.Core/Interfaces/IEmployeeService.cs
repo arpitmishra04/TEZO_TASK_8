@@ -6,7 +6,7 @@ namespace EmployeeManagement.Core.Interfaces
     {
         bool Add(EmployeeModel employee);
         bool Delete(string employeeNumber);
-        bool Edit(EmployeeModel employee);
+        bool Edit(EmployeeModel updatedEmployee,string EmpNo);
         void GoBack();
         List<EmployeeModel> ViewAll();
         EmployeeModel ViewOne(string employeeNumber);

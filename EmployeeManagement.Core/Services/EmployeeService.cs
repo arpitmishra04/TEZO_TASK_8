@@ -27,9 +27,9 @@ namespace EmployeeManagement.Core.Services
             return employeeDataAccess.Delete(employeeNumber);
         }
 
-        public bool Edit(EmployeeModel employee)
+        public bool Edit(EmployeeModel updatedEmployee,string emp)
         {
-            return employeeDataAccess.Update(employee);
+            return employeeDataAccess.Update(updatedEmployee,emp);
         }
 
         public void GoBack()

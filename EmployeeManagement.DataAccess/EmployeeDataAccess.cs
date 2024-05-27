@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using System.Text;
 using EmployeeManagement.DataAccess.Interfaces;
 using EmployeeManagement.Model;
 namespace EmployeeManagement.DataAccess
@@ -138,10 +139,40 @@ namespace EmployeeManagement.DataAccess
             
         }
 
-        public bool Update(EmployeeModel employee)
+        public bool Update(EmployeeModel updatedEmployee,string EmpNo)
         {
 
-            return Set(employee);
+            using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
+            {
+                
+
+                SqlCommand cmd = new SqlCommand("UPDATE Employee SET FirstName = @FirstName, LastName = @LastName,DateOfBirth=@DateOfBirth,Email=@Email,MobileNumber=@MobileNumber,JoiningDate=@JoiningDate,LocationId=@LocationId,JobTitle=@JobTitle,Department = @Department, Manager=@Manager, Project=@Project WHERE EmpNo = @EmployeeID", connection);
+
+                cmd.Parameters.AddWithValue("@EmployeeID", EmpNo);
+                cmd.Parameters.AddWithValue("@FirstName", updatedEmployee.FirstName);
+                cmd.Parameters.AddWithValue("@LastName", updatedEmployee.LastName);
+                cmd.Parameters.AddWithValue("@DateOfBirth", updatedEmployee.DateOfBirth);
+                cmd.Parameters.AddWithValue("@Email", updatedEmployee.Email);
+                cmd.Parameters.AddWithValue("@MobileNumber", updatedEmployee.MobileNumber);
+                cmd.Parameters.AddWithValue("@JoiningDate", updatedEmployee.JoiningDate);
+                cmd.Parameters.AddWithValue("@LocationID", updatedEmployee.LocationId);
+                cmd.Parameters.AddWithValue("@JobTitle", updatedEmployee.JobTitle);
+                cmd.Parameters.AddWithValue("@Department", updatedEmployee.Department);
+                cmd.Parameters.AddWithValue("@Manager", updatedEmployee.Manager);
+                cmd.Parameters.AddWithValue("@Project", updatedEmployee.Project);
+                connection.Open();
+
+                int rowsAffected=cmd.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
 
         }
 
