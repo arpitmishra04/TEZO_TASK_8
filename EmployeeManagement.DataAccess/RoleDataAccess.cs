@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,8 @@ namespace EmployeeManagement.DataAccess
 
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
-                SqlCommand cmd = new SqlCommand("select * from Roles", connection);
-
+                SqlCommand cmd = new SqlCommand("USP_GetRoles", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
                 connection.Open();
                 SqlDataReader sdr = cmd.ExecuteReader();
 
@@ -48,9 +49,9 @@ namespace EmployeeManagement.DataAccess
         {
             using (SqlConnection connection =new SqlConnection(Configuration.Configuration.Build()))
             {
-                SqlCommand cmd = new SqlCommand("insert into Roles values(@rolename,@department,@description,@locationid)", connection);
-
-                cmd.Parameters.AddWithValue("@rolename", role.RoleName);
+                SqlCommand cmd = new SqlCommand("USP_AddRole", connection);
+                cmd.CommandType= CommandType.StoredProcedure; 
+                cmd.Parameters.AddWithValue("@RoleName", role.RoleName);
                 cmd.Parameters.AddWithValue("@department",role.Department);
                 cmd.Parameters.AddWithValue("@description", role.Description);
                 cmd.Parameters.AddWithValue("@locationid", role.LocationId);
