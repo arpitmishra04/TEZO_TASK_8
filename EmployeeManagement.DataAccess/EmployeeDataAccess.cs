@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using EmployeeManagement.DataAccess.Interfaces;
 using EmployeeManagement.Model;
@@ -16,8 +17,8 @@ namespace EmployeeManagement.DataAccess
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
                 {
                     // Creating SqlCommand object   
-                    SqlCommand cm = new SqlCommand("select * from Employee", connection);
-                
+                    SqlCommand cm = new SqlCommand("USP_GetEmployee", connection);
+                    cm.CommandType = CommandType.StoredProcedure;
 
                    
                     // Opening Connection  
@@ -103,8 +104,9 @@ namespace EmployeeManagement.DataAccess
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
                 // Creating SqlCommand object   
-                SqlCommand cm = new SqlCommand("select * from Employee where EmpNo=@Emp", connection);
-                cm.Parameters.AddWithValue("@Emp", employeeNumber);
+                SqlCommand cm = new SqlCommand("USP_GetOneEmployee", connection);
+                cm.CommandType = CommandType.StoredProcedure;
+                cm.Parameters.AddWithValue("@EmployeeID", employeeNumber);
                 
 
                
@@ -146,7 +148,8 @@ namespace EmployeeManagement.DataAccess
             {
                 
 
-                SqlCommand cmd = new SqlCommand("UPDATE Employee SET FirstName = @FirstName, LastName = @LastName,DateOfBirth=@DateOfBirth,Email=@Email,MobileNumber=@MobileNumber,JoiningDate=@JoiningDate,LocationId=@LocationId,JobTitle=@JobTitle,Department = @Department, Manager=@Manager, Project=@Project WHERE EmpNo = @EmployeeID", connection);
+                SqlCommand cmd = new SqlCommand("USP_UpdateEmployee", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@EmployeeID", EmpNo);
                 cmd.Parameters.AddWithValue("@FirstName", updatedEmployee.FirstName);
@@ -163,14 +166,7 @@ namespace EmployeeManagement.DataAccess
                 connection.Open();
 
                 int rowsAffected=cmd.ExecuteNonQuery();
-                if (rowsAffected > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
 
             }
 
@@ -180,8 +176,9 @@ namespace EmployeeManagement.DataAccess
         {
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
-                SqlCommand cm = new SqlCommand("delete from Employee where EmpNo=@Emp", connection);
-            cm.Parameters.AddWithValue("@Emp", employeeNumber);
+                SqlCommand cm = new SqlCommand("USP_DeleteEmployee", connection);
+            cm.Parameters.AddWithValue("@EmployeeID", employeeNumber);
+                cm.CommandType = CommandType.StoredProcedure;
                 
                 connection.Open();
                 cm.ExecuteNonQuery();
@@ -201,13 +198,14 @@ namespace EmployeeManagement.DataAccess
                 // Executing the SQL query
                 int i = 0;
                 
-                    SqlCommand cm = new SqlCommand("insert into Employee values(@Emp,@FirstName,@LastName,@Dob,@Email,@Mobile,@JoiningDate,@LocationId,@JobTitle,@Department,@Manager,@Project) ", connection);
-                    cm.Parameters.AddWithValue("@Emp", employee.EmpNo);
+                    SqlCommand cm = new SqlCommand("USP_AddEmployee ", connection);
+                cm.CommandType= CommandType.StoredProcedure;
+                    cm.Parameters.AddWithValue("@EmployeeID", employee.EmpNo);
                     cm.Parameters.AddWithValue("@FirstName", employee.FirstName);
                     cm.Parameters.AddWithValue("@LastName", employee.LastName);
-                    cm.Parameters.AddWithValue("@Dob", employee.DateOfBirth);
+                    cm.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth);
                     cm.Parameters.AddWithValue("@Email", employee.Email);
-                    cm.Parameters.AddWithValue("@Mobile", employee.MobileNumber);
+                    cm.Parameters.AddWithValue("@MobileNumber", employee.MobileNumber);
                     cm.Parameters.AddWithValue("@JoiningDate", employee.JoiningDate);
                     cm.Parameters.AddWithValue("@LocationId", employee.LocationId);
                     cm.Parameters.AddWithValue("@JobTitle", employee.JobTitle);

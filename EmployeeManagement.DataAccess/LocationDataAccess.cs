@@ -3,6 +3,7 @@ using EmployeeManagement.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,8 @@ namespace EmployeeManagement.DataAccess
             List<LocationModel> locations = [];
             using (SqlConnection connection = new SqlConnection(Configuration.Configuration.Build()))
             {
-                SqlCommand command = new SqlCommand("Select * from Locations",connection);
+                SqlCommand command = new SqlCommand("USP_GetLocation",connection);
+                command.CommandType = CommandType.StoredProcedure;
                 connection.Open();
                 SqlDataReader sdr = command.ExecuteReader();
                 while (sdr.Read())
@@ -46,9 +48,10 @@ namespace EmployeeManagement.DataAccess
             {
               
 
-                SqlCommand command = new SqlCommand("insert into Locations values(@id,@name)",connection);
-                command.Parameters.AddWithValue("@id", location.LocationId);
-                command.Parameters.AddWithValue("@name", location.LocationName);
+                SqlCommand command = new SqlCommand("USP_AddLocation", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@LocationID", location.LocationId);
+                command.Parameters.AddWithValue("@LocationName", location.LocationName);
 
                 connection.Open();
                 command.ExecuteNonQuery();
