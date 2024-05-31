@@ -141,6 +141,12 @@ namespace EmployeeManagement.DataAccess
             
         }
 
+
+        SqlConnection GetConnection(string connectionString)
+        {
+            return new SqlConnection(connectionString);
+        }
+
         public bool Update(EmployeeModel updatedEmployee,string EmpNo)
         {
 
